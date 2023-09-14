@@ -2,7 +2,7 @@
 //
 // * /distr_tracing/distr_tracing_otel/distr-tracing-otel-troubleshooting.adoc
 :_mod-docs-content-type: PROCEDURE
-[id="distr-tracing-otel-troubleshoot-logging-exporter_{context}"]
+[id="distr-tracing-otel-troubleshoot-logging-exporter-stdout_{context}"]
 = Logging exporter
 
 You can configure the logging exporter to export the collected data to the standard output.

@@ -2,7 +2,7 @@
 //
 // * /distr_tracing/distr_tracing_otel/distr-tracing-otel-troubleshooting.adoc
 :_mod-docs-content-type: PROCEDURE
-[id="distr-tracing-otel-troubleshoot-logs_{context}"]
+[id="distr-tracing-otel-troubleshoot-collector-logs_{context}"]
 = Getting the OpenTelemetry Collector logs
 
 You can get the logs for the OpenTelemetry Collector as follows.
@@ -19,6 +19,6 @@ You can get the logs for the OpenTelemetry Collector as follows.
         logs:
           level: debug <1>
 ----
-<1> Collector's log level. Select one of the following values: `info`, `warn`, `error`, or `debug`. Defaults to `info`.
+<1> Collector's log level. Supported values include `info`, `warn`, `error`, or `debug`. Defaults to `info`.
 
 . Use the `oc logs` command or the OpenShift console to retrieve the logs.

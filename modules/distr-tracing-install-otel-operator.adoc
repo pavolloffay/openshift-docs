@@ -7,9 +7,6 @@ This module included in the following assemblies:
 [id="distr-tracing-install-otel-operator_{context}"]
 = Installing the {OTELName} Operator
 
-:FeatureName: The {OTELName} Operator
-include::snippets/technology-preview.adoc[leveloffset=+1]
-
 To install {OTELName}, you use the link:https://operatorhub.io/[OperatorHub] to install the {OTELName} Operator.
 
 By default, the Operator is installed in the `openshift-operators` project.

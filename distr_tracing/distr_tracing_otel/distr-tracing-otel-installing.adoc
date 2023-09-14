@@ -6,9 +6,6 @@ include::_attributes/common-attributes.adoc[]
 
 toc::[]
 
-:FeatureName: The {OTELOperator}
-include::snippets/technology-preview.adoc[leveloffset=+1]
-
 Installing the {OTELShortName} involves the following steps:
 
 . Installing the {OTELOperator}.

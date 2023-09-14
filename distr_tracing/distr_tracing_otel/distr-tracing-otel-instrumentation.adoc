@@ -1,0 +1,14 @@
+:_mod-docs-content-type: ASSEMBLY
+[id="distr-tracing-otel-instrumentation"]
+= Configuring and deploying the OpenTelemetry Instrumentation injection
+include::_attributes/common-attributes.adoc[]
+:context: distr-tracing-otel-instrumentation
+
+toc::[]
+
+:FeatureName: OpenTelemetry Instrumentation injection
+include::snippets/technology-preview.adoc[leveloffset=+1]
+
+The {OTELName} Operator uses a custom resource definition (CRD) file that defines the configuration of the Instrumentation.
+
+include::modules/distr-tracing-otel-config-instrumentation.adoc[leveloffset=+1]

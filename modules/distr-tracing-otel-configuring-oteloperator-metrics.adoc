@@ -1,0 +1,21 @@
+// Module included in the following assemblies:
+//
+// * distr-tracing-otel-configuring.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="configuring-oteloperator-metrics_{context}"]
+= Configuring the {OTELOperator} metrics and alerts
+
+When installing the {OTELOperator} from the web console, you can select the *Enable Operator recommended cluster monitoring on this Namespace* checkbox, which enables creating metrics of the {OTELOperator}.
+
+If the checkbox was not selected during installation, you can manually enable metrics and alerts even after installing the {OTELOperator}.
+
+.Procedure
+
+* Add the `openshift.io/cluster-monitoring: "true"` label in the project where the {OTELOperator} is installed, which is `openshift-opentelemetry-operator` by default.
+
+.Verification
+
+You can use the *Administrator* view of the web console to verify successful configuration:
+
+. Go to *Observe* -> *Targets*, filter by *Source: Platform*, and search for `opentelemetry-operator`, which must have the *Up* status.

@@ -9,8 +9,18 @@ toc::[]
 The {OTELName} Operator uses a custom resource definition (CRD) file that defines the architecture and configuration settings to be used when creating and deploying the {OTELShortName} resources. You can install the default configuration or modify the file.
 
 include::modules/distr-tracing-otel-config-collector.adoc[leveloffset=+1]
-
+include::modules/distr-tracing-otel-config-multicluster.adoc[leveloffset=+1]
 include::modules/distr-tracing-otel-config-send-metrics-monitoring-stack.adoc[leveloffset=+1]
+
+[id="setting-up-monitoring-for-otel"]
+== Setting up monitoring for the {OTELShortName}
+
+The {OTELOperator} supports monitoring and alerting of each OpenTelemtry Collector instance and exposes upgrade and operational metrics about the Operator itself.
+
+include::modules/distr-tracing-otel-configuring-otelcol-metrics.adoc[leveloffset=+1]
+
+include::modules/distr-tracing-otel-configuring-oteloperator-metrics.adoc[leveloffset=+1]
+
 
 [role="_additional-resources"]
 [id="additional-resources_deploy-otel"]
