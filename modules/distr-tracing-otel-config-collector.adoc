@@ -374,7 +374,7 @@ The Logging exporter prints data to the standard output.
 [id="basicauth-extension_{context}"]
 ==== BasicAuth extension
 
-You can use the BasicAuth extension as an authenticator on receivers and exporters.
+You can use the BasicAuth extension as an authenticator for HTTP and gGRPC based receivers and exporters.
 Client authentication and server authentication for the BasicAuth extension are configured in separate sections in the OpenTelemetry Collector custom resource.
 
 * Support level: link:https://access.redhat.com/support/offerings/techpreview[Technology Preview]
@@ -407,12 +407,12 @@ Client authentication and server authentication for the BasicAuth extension are 
         auth:
           authenticator: basicauth/client <6>
 
-service:
-  extensions: [basicauth/server, basicauth/client]
-  pipelines:
-    traces:
-      receivers: [otlp]
-      exporters: [otlp]
+    service:
+      extensions: [basicauth/server, basicauth/client]
+      pipelines:
+        traces:
+          receivers: [otlp]
+          exporters: [otlp]
 ----
 <1> The BasicAuth extension can be configured as a server authenticator that reads credentials from a `.htpasswd` file.
 <2> The BasicAuth extension can be configured as a client authenticator to read the credentials from an inline string that consists of environment variables.
@@ -447,3 +447,354 @@ Aggregates Request, Error, and Duration (R.E.D) OpenTelemetry metrics from span 
           receivers: [spanmetrics]
 ----
 <1>: Defines the flush interval of the generated metrics. Defaults to `15s`.
+
+[id="bearertokenauth-extension_{context}"]
+==== BearertokenAuth extension
+
+You can use the BearertokenAuth extension as an authenticator for HTTP and gGRPC based receivers and exporters.
+Client authentication and server authentication for the BearertokenAuth extension can be used on the receiver and exporter side in the OpenTelemetry Collector custom resource.
+
+* Support level: link:https://access.redhat.com/support/offerings/techpreview[Technology Preview]
+* Supported signals: traces, metrics, logs
+
+.OpenTelemetry Collector custom resource with client and server authentication configured for the BearertokenAuth extension
+[source,yaml]
+----
+  config: |
+    extensions:
+      bearertokenauth:
+        scheme: "Bearer" <1>
+        token: "somerandomtoken" <2>
+        filename: "file-containing.token" <3>
+
+    receivers:
+      otlp:
+        protocols:
+          http:
+            auth:
+              authenticator: bearertokenauth <4>
+    exporters:
+      otlp:
+        auth:
+          authenticator: bearertokenauth <5>
+
+    service:
+      extensions: [bearertokenauth]
+      pipelines:
+        traces:
+          receivers: [otlp]
+          exporters: [otlp]
+----
+<1> The BearertokenAuth extension can be configured to send a custom `scheme`, but `Bearer` is used as default.
+<2> The BearertokenAuth extension token added as metadata identify a message.
+<3> Path to a file that contains a authorization token that is transmitted with every message.
+<4> The authenticator configuration can be assigned to an OTLP receiver.
+<5> The authenticator configuration can be assigned to an OTLP exporter.
+
+
+[id="oauth2client-extension_{context}"]
+==== OAuth2Client extension
+
+You can use the OAuth2Client extension as authenticator on HTTP or gRPC based exporters.
+Client authentication for the OAuth2Client extension is configured in a separate sections in the OpenTelemetry Collector custom resource.
+
+* Support level: link:https://access.redhat.com/support/offerings/techpreview[Technology Preview]
+* Supported signals: traces, metrics, logs
+
+.OpenTelemetry Collector custom resource with client authentication configured for the OAuth2Client extension
+[source,yaml]
+----
+  config: |
+    extensions:
+      oauth2client:
+        client_id: someclientid <1>
+        client_secret: someclientsecret <2>
+        endpoint_params: <3>
+          audience: someaudience
+        token_url: https://example.com/oauth2/default/v1/token <4>
+        scopes: ["api.metrics"] <5>
+        # tls settings for the token client
+        tls: <6>
+          insecure: true <7>
+          ca_file: /var/lib/mycert.pem <8>
+          cert_file: certfile <9>
+          key_file: keyfile <10>
+        # timeout for the token client
+        timeout: 2s <11>
+
+    receivers:
+      otlp:
+        protocols:
+          http:
+
+    exporters:
+      otlp:
+        auth:
+          authenticator: oauth2client <12>
+
+    service:
+      extensions: [oauth2client]
+      pipelines:
+        traces:
+          receivers: [otlp]
+          exporters: [otlp]
+----
+<1> Client identifier for the OpenTelemetry Collector application.
+<2> Secret shared between the client and authorization server.
+<3> Further metadata which is transferred during authentication. Consisting of key and value.
+<4> Token endpoint used to retrieve an access token using
+
+<1> Client identifier, which is provided by the identity provider.
+<2> Confidential key used to authenticate the client to the identity provider.
+<3> Further metadata which is transferred during authentication. Consisting of key and value. For example audience specifies the intended audience for the access token. It indicates the recipient of the token.
+<4> URL of the OAuth2 token endpoint, where the Collector will request access tokens.
+<5> Scopes define the specific permissions or access levels requested by the client.
+<6> Specifies TLS (Transport Layer Security) settings for the token client, which is used to establish a secure connection when requesting tokens.
+<7> Flag that when set to true, configures the collector to use an insecure (non-verified) TLS connection when to call the configured token endpoint.
+<8> Parameter that specifies the path to a CA (Certificate Authority) file used to verify the server's certificate during the TLS handshake.
+<9> Parameter that specifies the path to the client certificate file, which the client may use to authenticate itself to the OAuth2 server if required.
+<10> Parameter that specifies the path to the client's private key file, which is used in conjunction with the client certificate for authentication if needed.
+<11> Sets a timeout for the token client's request.
+<12> The authenticator configuration can be assigned to an OTLP exporter.
+
+
+[id="jaegerremotesampling-extension_{context}"]
+==== Jaeger Remote Sampling extension
+
+This extension allows serving sampling strategies following the Jaeger's remote sampling API. This extension can be configured to proxy requests to a backing remote sampling server, which could potentially be a Jaeger Collector down the pipeline, or a static JSON file from the local file system.
+
+* Support level: link:https://access.redhat.com/support/offerings/techpreview[Technology Preview]
+
+.OpenTelemetry Collector custom resource with configured Jaeger Remote Sampling extension
+[source,yaml]
+----
+  config: |
+    extensions:
+      jaegerremotesampling:
+        source:
+          reload_interval: 30s <1>
+          remote:
+            endpoint: jaeger-collector:14250 <2>
+          file: /etc/otelcol/sampling_strategies.json <3>
+
+    receivers:
+      otlp:
+        protocols:
+          http:
+
+    exporters:
+      otlp:
+
+    service:
+      extensions: [jaegerremotesampling]
+      pipelines:
+        traces:
+          receivers: [otlp]
+          exporters: [otlp]
+----
+<1> Interval in which the sampling configuration is updated.
+<2> Specifies the endpoint where the Jaeger remote sampling strategy provider can be reached.
+<3> Specifies the path to a local file containing sampling strategy configuration in JSON format.
+
+.Example of Jaeger Remote Sampling strategy file
+[source,json]
+----
+{
+  "service_strategies": [
+    {
+      "service": "foo",
+      "type": "probabilistic",
+      "param": 0.8,
+      "operation_strategies": [
+        {
+          "operation": "op1",
+          "type": "probabilistic",
+          "param": 0.2
+        },
+        {
+          "operation": "op2",
+          "type": "probabilistic",
+          "param": 0.4
+        }
+      ]
+    },
+    {
+      "service": "bar",
+      "type": "ratelimiting",
+      "param": 5
+    }
+  ],
+  "default_strategy": {
+    "type": "probabilistic",
+    "param": 0.5,
+    "operation_strategies": [
+      {
+        "operation": "/health",
+        "type": "probabilistic",
+        "param": 0.0
+      },
+      {
+        "operation": "/metrics",
+        "type": "probabilistic",
+        "param": 0.0
+      }
+    ]
+  }
+}
+----
+
+
+
+[id="pprof-extension_{context}"]
+==== PPROF extension
+
+Performance Profiler extension enables the golang `net/http/pprof` endpoint. This is typically used by developers to collect performance profiles and investigate issues with the service.
+
+* Support level: link:https://access.redhat.com/support/offerings/techpreview[Technology Preview]
+
+.OpenTelemetry Collector custom resource with configured pprof extension
+[source,yaml]
+----
+  config: |
+    extensions:
+      pprof:
+        endpoint: localhost:1777 <1>
+        block_profile_fraction: 0 <2>
+        mutex_profile_fraction: 0 <3>
+        save_to_file: test.pprof <4>
+
+    receivers:
+      otlp:
+        protocols:
+          http:
+
+    exporters:
+      otlp:
+
+    service:
+      extensions: [pprof]
+      pipelines:
+        traces:
+          receivers: [otlp]
+          exporters: [otlp]
+----
+<1> Endpoint in which the pprof will be listening to. Use localhost: to make it available only locally, or ":" to make it available on all network interfaces. Default value is `localhost:1777`.
+<2> Fraction of blocking events that are profiled. A value <= 0 disables profiling. See https://golang.org/pkg/runtime/#SetBlockProfileRate for details. Default vlaue is 0.
+<3> Fraction of mutex contention events that are profiled. A value <= 0 disables profiling. See https://golang.org/pkg/runtime/#SetMutexProfileFraction for details. Default value is 0.
+<4> File name to save the CPU profile to. The profiling starts when the Collector starts and is saved to the file when the Collector is terminated.
+
+[id="healthcheck-extension_{context}"]
+==== Health Check extension
+
+The Health Check extension enables an HTTP url that can be probed to check the status of the OpenTelemetry Collector. This extension can be used as a liveness and/or readiness probe on OpenShift.
+
+* Support level: link:https://access.redhat.com/support/offerings/techpreview[Technology Preview]
+
+.OpenTelemetry Collector custom resource with configured Health Check extension
+[source,yaml]
+----
+  config: |
+    extensions:
+      health_check:
+        endpoint: "0.0.0.0:13133" <1>
+        tls: <2>
+          ca_file: "/path/to/ca.crt"
+          cert_file: "/path/to/cert.crt"
+          key_file: "/path/to/key.key"
+        path: "/health/status" <3>
+        check_collector_pipeline: <4>
+          enabled: true <5>
+          interval: "5m" <6>
+          exporter_failure_threshold: 5 <7>
+
+    receivers:
+      otlp:
+        protocols:
+          http:
+
+    exporters:
+      otlp:
+
+    service:
+      extensions: [health_check]
+      pipelines:
+        traces:
+          receivers: [otlp]
+          exporters: [otlp]
+----
+<1> Address to publish the health check status. Default is `0.0.0.0:13133`.
+<2> The TLS server side configuration. Defines paths to TLS certificates. If omitted, TLS is disabled.
+<3> Specifies the path to be configured for the health check server. Default is `/`.
+<4> Settings of collector pipeline health check.
+<5> Enableds the collector pipeline check. default is `false`.
+<6> Time interval to check the number of failures. Default is `5m`.
+<7> The failure number threshold to mark containers as healthy. Default is `5`.
+
+
+[id="balast-extension_{context}"]
+==== Balast extension
+
+Memory Ballast extension enables applications to configure memory ballast for the process.
+
+* Support level: link:https://access.redhat.com/support/offerings/techpreview[Technology Preview]
+
+.OpenTelemetry Collector custom resource with configured Balast extension
+[source,yaml]
+----
+  config: |
+    extensions:
+      memory_ballast:
+        size_mib: 64 <1>
+        size_in_percentage: 20 <2>
+
+    receivers:
+      otlp:
+        protocols:
+          http:
+
+    exporters:
+      otlp:
+
+    service:
+      extensions: [memory_ballast]
+      pipelines:
+        traces:
+          receivers: [otlp]
+          exporters: [otlp]
+----
+<1> Is the memory ballast size, in MiB. Takes higher priority than `size_in_percentage` if both are specified at the same time.
+<2> Sets the memory ballast based on the total memory in percentage, value range is 1-100. It is supported in both containerized(eg, docker, k8s) and physical host environments.
+
+
+[id="zpages-extension_{context}"]
+==== zPages extension
+
+The zPage extension enables an extension that serves zPages, an HTTP endpoint that provides live data for debugging different components that were properly instrumented for such. All core exporters and receivers provide some zPage instrumentation.
+
+zPages are useful for in-process diagnostics without having to depend on any backend to examine traces or metrics.
+
+* Support level: link:https://access.redhat.com/support/offerings/techpreview[Technology Preview]
+
+.OpenTelemetry Collector custom resource with configured Zpage extension
+[source,yaml]
+----
+  config: |
+    extensions:
+      zpages:
+        endpoint: "localhost:55679"
+
+    receivers:
+      otlp:
+        protocols:
+          http:
+    exporters:
+      otlp:
+
+    service:
+      extensions: [zpages]
+      pipelines:
+        traces:
+          receivers: [otlp]
+          exporters: [otlp]
+----
+<1> Specifies the HTTP endpoint that serves zPages. Use localhost: to make it available only locally, or ":" to make it available on all network interfaces. Default is `localhost:55679`.
