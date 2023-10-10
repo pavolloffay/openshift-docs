@@ -781,7 +781,7 @@ zPages are useful for in-process diagnostics without having to depend on any bac
   config: |
     extensions:
       zpages:
-        endpoint: "localhost:55679"
+        endpoint: "localhost:55679" <1>
 
     receivers:
       otlp:
@@ -797,4 +797,5 @@ zPages are useful for in-process diagnostics without having to depend on any bac
           receivers: [otlp]
           exporters: [otlp]
 ----
+
 <1> Specifies the HTTP endpoint that serves zPages. Use localhost: to make it available only locally, or ":" to make it available on all network interfaces. Default is `localhost:55679`.
