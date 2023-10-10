@@ -449,7 +449,7 @@ Aggregates Request, Error, and Duration (R.E.D) OpenTelemetry metrics from span 
 <1>: Defines the flush interval of the generated metrics. Defaults to `15s`.
 
 [id="bearertokenauth-extension_{context}"]
-==== BearertokenAuth extension
+==== BearerTokenAuth extension
 
 You can use the BearertokenAuth extension as an authenticator for HTTP and gGRPC based receivers and exporters.
 Client authentication and server authentication for the BearertokenAuth extension can be used on the receiver and exporter side in the OpenTelemetry Collector custom resource.
