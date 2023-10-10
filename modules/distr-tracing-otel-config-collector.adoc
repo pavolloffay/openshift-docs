@@ -451,7 +451,7 @@ Aggregates Request, Error, and Duration (R.E.D) OpenTelemetry metrics from span 
 [id="bearertokenauth-extension_{context}"]
 ==== BearerTokenAuth extension
 
-You can use the BearertokenAuth extension as an authenticator for HTTP and gGRPC based receivers and exporters.
+You can use the BearerTokenAuth extension as an authenticator for receivers and exporters that are based on HTTP and gRPC.
 Client authentication and server authentication for the BearertokenAuth extension can be used on the receiver and exporter side in the OpenTelemetry Collector custom resource.
 
 * Support level: link:https://access.redhat.com/support/offerings/techpreview[Technology Preview]
