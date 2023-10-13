@@ -485,7 +485,7 @@ You can use the OpenTelemetry Collector custom resource to configure client auth
           receivers: [otlp]
           exporters: [otlp]
 ----
-<1> The BearertokenAuth extension can be configured to send a custom `scheme`, but `Bearer` is used as default.
+<1> You can configure the BearerTokenAuth extension to send a custom `scheme`. The default is `Bearer`.
 <2> The BearertokenAuth extension token added as metadata identify a message.
 <3> Path to a file that contains a authorization token that is transmitted with every message.
 <4> The authenticator configuration can be assigned to an OTLP receiver.
