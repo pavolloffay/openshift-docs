@@ -374,7 +374,7 @@ The Logging exporter prints data to the standard output.
 [id="basicauth-extension_{context}"]
 ==== BasicAuth extension
 
-You can use the BasicAuth extension as an authenticator for HTTP and gGRPC based receivers and exporters.
+You can use the BasicAuth extension as an authenticator for receivers and exporters that are based on the HTTP and the gRPC protocol.
 Client authentication and server authentication for the BasicAuth extension are configured in separate sections in the OpenTelemetry Collector custom resource.
 
 * Support level: link:https://access.redhat.com/support/offerings/techpreview[Technology Preview]
@@ -451,7 +451,7 @@ Aggregates Request, Error, and Duration (R.E.D) OpenTelemetry metrics from span 
 [id="bearertokenauth-extension_{context}"]
 ==== BearerTokenAuth extension
 
-You can use the BearerTokenAuth extension as an authenticator for receivers and exporters that are based on HTTP and gRPC.
+You can use the BearerTokenAuth extension as an authenticator for receivers and exporters that are based on the HTTP and the gRPC protocol.
 You can use the OpenTelemetry Collector custom resource to configure client authentication and server authentication for the BearerTokenAuth extension on the receiver and exporter side.
 
 * Support level: link:https://access.redhat.com/support/offerings/techpreview[Technology Preview]
@@ -464,7 +464,7 @@ You can use the OpenTelemetry Collector custom resource to configure client auth
     extensions:
       bearertokenauth:
         scheme: "Bearer" <1>
-        token: "somerandomtoken" <2>
+        token: "<token>" <2>
         filename: "<token_file>" <3>
 
     receivers:
@@ -495,8 +495,8 @@ You can use the OpenTelemetry Collector custom resource to configure client auth
 [id="oauth2client-extension_{context}"]
 ==== OAuth2Client extension
 
-You can use the OAuth2Client extension as authenticator on HTTP or gRPC based exporters.
-Client authentication for the OAuth2Client extension is configured in a separate sections in the OpenTelemetry Collector custom resource.
+You can use the OAuth2Client extension as an authenticator for exporters that are based on the HTTP and the gRPC protocol.
+Client authentication for the OAuth2Client extension is configured in a separate section in the OpenTelemetry Collector custom resource.
 
 * Support level: link:https://access.redhat.com/support/offerings/techpreview[Technology Preview]
 * Supported signals: traces, metrics, logs
@@ -507,19 +507,18 @@ Client authentication for the OAuth2Client extension is configured in a separate
   config: |
     extensions:
       oauth2client:
-        client_id: someclientid <1>
-        client_secret: someclientsecret <2>
+        client_id: <client_id> <1>
+        client_secret: <client_secret> <2>
         endpoint_params: <3>
-          audience: someaudience
+          audience: <audience>
         token_url: https://example.com/oauth2/default/v1/token <4>
         scopes: ["api.metrics"] <5>
         # tls settings for the token client
         tls: <6>
           insecure: true <7>
           ca_file: /var/lib/mycert.pem <8>
-          cert_file: certfile <9>
-          key_file: keyfile <10>
-        # timeout for the token client
+          cert_file: <cert_file> <9>
+          key_file: <key_file> <10>
         timeout: 2s <11>
 
     receivers:
@@ -539,33 +538,33 @@ Client authentication for the OAuth2Client extension is configured in a separate
           receivers: [otlp]
           exporters: [otlp]
 ----
-<1> Client identifier for the OpenTelemetry Collector application.
-<2> Secret shared between the client and authorization server.
-<3> Further metadata which is transferred during authentication. Consisting of key and value.
-<4> Token endpoint used to retrieve an access token using
+<1> The client identifier for the OpenTelemetry Collector application.
+<2> The secret that is shared between the client and authorization server.
+<3> You can add further metadata as key-value pairs to be transferred during authentication.
+<4> The token endpoint that is used to retrieve an access token.
 
 <1> Client identifier, which is provided by the identity provider.
 <2> Confidential key used to authenticate the client to the identity provider.
 <3> Further metadata which is transferred during authentication. Consisting of key and value. For example audience specifies the intended audience for the access token. It indicates the recipient of the token.
 <4> URL of the OAuth2 token endpoint, where the Collector will request access tokens.
-<5> Scopes define the specific permissions or access levels requested by the client.
-<6> Specifies TLS (Transport Layer Security) settings for the token client, which is used to establish a secure connection when requesting tokens.
-<7> Flag that when set to true, configures the collector to use an insecure (non-verified) TLS connection when to call the configured token endpoint.
-<8> Parameter that specifies the path to a CA (Certificate Authority) file used to verify the server's certificate during the TLS handshake.
-<9> Parameter that specifies the path to the client certificate file, which the client may use to authenticate itself to the OAuth2 server if required.
-<10> Parameter that specifies the path to the client's private key file, which is used in conjunction with the client certificate for authentication if needed.
+<5> The scopes define the specific permissions or access levels requested by the client.
+<6> The Transport Layer Security (TLS) settings for the token client, which is used to establish a secure connection when requesting tokens.
+<7> When set to `true`, configures the Collector to use an insecure or non-verified TLS connection to call the configured token endpoint.
+<8> The path to a Certificate Authority (CA) file that is used to verify the server's certificate during the TLS handshake.
+<9> The path to the client certificate file that the client must use to authenticate itself to the OAuth2 server if required.
+<10> The path to the client's private key file that is used with the client certificate if needed for authentication.
 <11> Sets a timeout for the token client's request.
-<12> The authenticator configuration can be assigned to an OTLP exporter.
+<12> You can assign the authenticator configuration to an OTLP exporter.
 
 
 [id="jaegerremotesampling-extension_{context}"]
 ==== Jaeger Remote Sampling extension
 
-This extension allows serving sampling strategies following the Jaeger's remote sampling API. This extension can be configured to proxy requests to a backing remote sampling server, which could potentially be a Jaeger Collector down the pipeline, or a static JSON file from the local file system.
+This extension allows serving sampling strategies after Jaeger's remote sampling API. You can configure this extension to proxy requests to a backing remote sampling server such as a Jaeger collector down the pipeline or to a static JSON file from the local file system.
 
 * Support level: link:https://access.redhat.com/support/offerings/techpreview[Technology Preview]
 
-.OpenTelemetry Collector custom resource with configured Jaeger Remote Sampling extension
+.OpenTelemetry Collector custom resource with a configured Jaeger Remote Sampling extension
 [source,yaml]
 ----
   config: |
@@ -592,11 +591,11 @@ This extension allows serving sampling strategies following the Jaeger's remote 
           receivers: [otlp]
           exporters: [otlp]
 ----
-<1> Interval in which the sampling configuration is updated.
-<2> Specifies the endpoint where the Jaeger remote sampling strategy provider can be reached.
-<3> Specifies the path to a local file containing sampling strategy configuration in JSON format.
+<1> The time interval at which the sampling configuration is updated.
+<2> The endpoint for reaching the Jaeger remote sampling strategy provider.
+<3> The path to a local file that contains a sampling strategy configuration in the JSON format.
 
-.Example of Jaeger Remote Sampling strategy file
+.Example of a Jaeger Remote Sampling strategy file
 [source,json]
 ----
 {
@@ -646,13 +645,13 @@ This extension allows serving sampling strategies following the Jaeger's remote 
 
 
 [id="pprof-extension_{context}"]
-==== PPROF extension
+==== Performance Profiler extension
 
-Performance Profiler extension enables the golang `net/http/pprof` endpoint. This is typically used by developers to collect performance profiles and investigate issues with the service.
+The Performance Profiler extension enables the Go `net/http/pprof` endpoint. This is typically used by developers to collect performance profiles and investigate issues with the service.
 
 * Support level: link:https://access.redhat.com/support/offerings/techpreview[Technology Preview]
 
-.OpenTelemetry Collector custom resource with configured pprof extension
+.OpenTelemetry Collector custom resource with the configured Performance Profiler extension
 [source,yaml]
 ----
   config: |
@@ -678,19 +677,19 @@ Performance Profiler extension enables the golang `net/http/pprof` endpoint. Thi
           receivers: [otlp]
           exporters: [otlp]
 ----
-<1> Endpoint in which the pprof will be listening to. Use localhost: to make it available only locally, or ":" to make it available on all network interfaces. Default value is `localhost:1777`.
-<2> Fraction of blocking events that are profiled. A value <= 0 disables profiling. See https://golang.org/pkg/runtime/#SetBlockProfileRate for details. Default vlaue is 0.
-<3> Fraction of mutex contention events that are profiled. A value <= 0 disables profiling. See https://golang.org/pkg/runtime/#SetMutexProfileFraction for details. Default value is 0.
-<4> File name to save the CPU profile to. The profiling starts when the Collector starts and is saved to the file when the Collector is terminated.
+<1> The endpoint at which this extension listens. Use `localhost:` to make it available only locally or `":"` to make it available on all network interfaces. The default value is `localhost:1777`.
+<2> Sets a fraction of blocking events to be profiled. To disable profiling, set this to `0` or a negative integer. See the link:https://golang.org/pkg/runtime/#SetBlockProfileRate[documentation] for the `runtime` package. The default value is `0`.
+<3> Set a fraction of mutex contention events to be profiled. To disable profiling, set this to `0` or a negative integer. See the link:https://golang.org/pkg/runtime/#SetMutexProfileFraction[documentation] for the `runtime` package. The default value is `0`.
+<4> The name of the file in which the CPU profile is to be saved. Profiling starts when the Collector starts. Profiling is saved to the file when the Collector is terminated.
 
 [id="healthcheck-extension_{context}"]
 ==== Health Check extension
 
-The Health Check extension enables an HTTP url that can be probed to check the status of the OpenTelemetry Collector. This extension can be used as a liveness and/or readiness probe on OpenShift.
+The Health Check extension provides an HTTP URL for checking the status of the OpenTelemetry Collector. You can use this extension as a liveness and readiness probe on OpenShift.
 
 * Support level: link:https://access.redhat.com/support/offerings/techpreview[Technology Preview]
 
-.OpenTelemetry Collector custom resource with configured Health Check extension
+.OpenTelemetry Collector custom resource with the configured Health Check extension
 [source,yaml]
 ----
   config: |
@@ -722,23 +721,23 @@ The Health Check extension enables an HTTP url that can be probed to check the s
           receivers: [otlp]
           exporters: [otlp]
 ----
-<1> Address to publish the health check status. Default is `0.0.0.0:13133`.
-<2> The TLS server side configuration. Defines paths to TLS certificates. If omitted, TLS is disabled.
-<3> Specifies the path to be configured for the health check server. Default is `/`.
-<4> Settings of collector pipeline health check.
-<5> Enableds the collector pipeline check. default is `false`.
-<6> Time interval to check the number of failures. Default is `5m`.
-<7> The failure number threshold to mark containers as healthy. Default is `5`.
+<1> The target IP address for publishing the health check status. The default is `0.0.0.0:13133`.
+<2> The TLS server-side configuration. Defines paths to TLS certificates. If omitted, the TLS is disabled.
+<3> The path for the health check server. The default is `/`.
+<4> Settings for the Collector pipeline health check.
+<5> Enables the Collector pipeline health check. The default is `false`.
+<6> The time interval for checking the number of failures. The default is `5m`.
+<7> The threshold of a number of failures until which a container is still marked as healthy. The default is `5`.
 
 
-[id="balast-extension_{context}"]
-==== Balast extension
+[id="memory-ballast-extension_{context}"]
+==== Memory Ballast extension
 
-Memory Ballast extension enables applications to configure memory ballast for the process.
+The Memory Ballast extension enables applications to configure memory ballast for the process.
 
 * Support level: link:https://access.redhat.com/support/offerings/techpreview[Technology Preview]
 
-.OpenTelemetry Collector custom resource with configured Balast extension
+.OpenTelemetry Collector custom resource with the configured Memory Ballast extension
 [source,yaml]
 ----
   config: |
@@ -762,20 +761,20 @@ Memory Ballast extension enables applications to configure memory ballast for th
           receivers: [otlp]
           exporters: [otlp]
 ----
-<1> Is the memory ballast size, in MiB. Takes higher priority than `size_in_percentage` if both are specified at the same time.
+<1> Sets the memory ballast size in MiB. Takes priority over the `size_in_percentage` if both are specified.
 <2> Sets the memory ballast as a percentage, `1`-`100`, of the total memory. Supports containerized and physical host environments.
 
 
 [id="zpages-extension_{context}"]
 ==== zPages extension
 
-The zPage extension enables an extension that serves zPages, an HTTP endpoint that provides live data for debugging different components that were properly instrumented for such. All core exporters and receivers provide some zPage instrumentation.
+The zPages extension provides an HTTP endpoint for extensions that serve zPages. At the endpoint, this extension serves live data for debugging instrumented components. All core exporters and receivers provide some zPages instrumentation.
 
-zPages are useful for in-process diagnostics without having to depend on any backend to examine traces or metrics.
+zPages are useful for in-process diagnostics without having to depend on a back end to examine traces or metrics.
 
 * Support level: link:https://access.redhat.com/support/offerings/techpreview[Technology Preview]
 
-.OpenTelemetry Collector custom resource with configured Zpage extension
+.OpenTelemetry Collector custom resource with the configured zPages extension
 [source,yaml]
 ----
   config: |
