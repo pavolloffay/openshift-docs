@@ -763,7 +763,7 @@ Memory Ballast extension enables applications to configure memory ballast for th
           exporters: [otlp]
 ----
 <1> Is the memory ballast size, in MiB. Takes higher priority than `size_in_percentage` if both are specified at the same time.
-<2> Sets the memory ballast based on the total memory in percentage, value range is 1-100. It is supported in both containerized(eg, docker, k8s) and physical host environments.
+<2> Sets the memory ballast as a percentage, `1`-`100`, of the total memory. Supports containerized and physical host environments.
 
 
 [id="zpages-extension_{context}"]
