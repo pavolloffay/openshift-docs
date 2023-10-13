@@ -538,11 +538,6 @@ Client authentication for the OAuth2Client extension is configured in a separate
           receivers: [otlp]
           exporters: [otlp]
 ----
-<1> The client identifier for the OpenTelemetry Collector application.
-<2> The secret that is shared between the client and authorization server.
-<3> You can add further metadata as key-value pairs to be transferred during authentication.
-<4> The token endpoint that is used to retrieve an access token.
-
 <1> Client identifier, which is provided by the identity provider.
 <2> Confidential key used to authenticate the client to the identity provider.
 <3> Further metadata which is transferred during authentication. Consisting of key and value. For example audience specifies the intended audience for the access token. It indicates the recipient of the token.
