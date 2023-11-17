@@ -10,4 +10,4 @@ The OpenTelemetry Collector offers multiple ways to measure its health as well a
 
 include::modules/distr-tracing-otel-troubleshoot-logs.adoc[leveloffset=+1]
 include::modules/distr-tracing-otel-troubleshoot-metrics.adoc[leveloffset=+1]
-include::modules/distr-tracing-otel-troubleshoot-logging-exporter.adoc[leveloffset=+1]
+include::modules/distr-tracing-otel-troubleshoot-debug-exporter.adoc[leveloffset=+1]
