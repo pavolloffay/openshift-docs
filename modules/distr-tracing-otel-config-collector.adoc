@@ -77,7 +77,7 @@ spec:
 
 |exporters:
 |An exporter sends data to one or more back ends or destinations. By default, no exporters are configured. There must be at least one enabled exporter for a configuration to be considered valid. Exporters are enabled by being added to a pipeline. Exporters might be used with their default settings, but many require configuration to specify at least the destination and security settings.
-|`otlp`, `otlphttp`, `logging`, `prometheus`
+|`otlp`, `otlphttp`, `debug`, `prometheus`
 |None
 
 |service:
@@ -745,17 +745,17 @@ The OTLP HTTP exporter exports traces and metrics using the OpenTelemetry protoc
 <2> The client side TLS configuration. Defines paths to TLS certificates.
 <3> Headers are sent in every HTTP request.
 
-[id="logging-exporter_{context}"]
-==== Logging exporter
+[id="debug-exporter_{context}"]
+==== Debug exporter
 
-The Logging exporter prints traces and metrics to the standard output.
+The Debug exporter prints traces and metrics to the standard output.
 
-.OpenTelemetry Collector custom resource with an enabled Logging exporter
+.OpenTelemetry Collector custom resource with an enabled Debug exporter
 [source,yaml]
 ----
   config: |
     exporters:
-      logging:
+      debug:
         verbosity: detailed <1>
     service:
       pipelines:
@@ -764,7 +764,7 @@ The Logging exporter prints traces and metrics to the standard output.
         metrics:
           exporters: [logging]
 ----
-<1> Verbosity of the logging export: `detailed` or `normal` or `basic`. When set to `detailed`, pipeline data is verbosely logged. Defaults to `normal`.
+<1> Verbosity of the debug export: `detailed` or `normal` or `basic`. When set to `detailed`, pipeline data is verbosely logged. Defaults to `normal`.
 
 [id="prometheus-exporter_{context}"]
 ==== Prometheus exporter
