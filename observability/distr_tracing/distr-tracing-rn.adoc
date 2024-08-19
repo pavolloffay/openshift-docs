@@ -29,7 +29,7 @@ This release fixes the following CVEs:
 
 The {TempoName} is provided through the {TempoOperator}.
 
-The {TempoName} 3.3 is based on the open source link:https://grafana.com/oss/tempo/[Grafana Tempo] 2.?.?.
+The {TempoName} 3.3 is based on the open source link:https://grafana.com/oss/tempo/[Grafana Tempo] 2.5.0.
 
 [id="distr-tracing_3-3_tempo-release-notes_technology-preview-features_{context}"]
 ==== Technology Preview features
@@ -46,7 +46,19 @@ include::snippets/technology-preview.adoc[leveloffset=+1]
 
 This update introduces the following enhancements:
 
-* ???.
+// https://issues.redhat.com/browse/TRACING-4108
+* Added support for securing Jaeger UI and Jaeger APIs with OpenShift Oauth proxy.
+// https://issues.redhat.com/browse/TRACING-3954
+* Added support for using OpenShift serving certificates on ingestion APIs when multitenancy is disabled.
+// https://issues.redhat.com/browse/TRACING-4171
+* Added support for ingesting OpenTelemetry protocol (OTLP) JSON when multitenancy is enabled.
+// https://issues.redhat.com/browse/TRACING-4176
+* Added support for AWS S3 Secure Token authentication.
+// https://issues.redhat.com/browse/TRACING-4185
+* Added support for automatically reloading certificates.
+// https://issues.redhat.com/browse/TRACING-4214
+* Added support for configuring lookback for service names.
+
 
 [id="distr-tracing_3-3_tempo-release-notes_deprecated-functionality_{context}"]
 ==== Deprecated functionality
@@ -63,7 +75,9 @@ In the {TempoName} 3.3, the FEATURE has been removed. Bug fixes and support are 
 
 This update introduces the following bug fixes:
 
-* Before this update, ???. With this update, ???. (link:https://issues.redhat.com/browse/TRACING-????/[TRACING-????])
+* Before this update, storage certificate name could not contain dot. With this update storage certificate name can contain dots (link:https://issues.redhat.com/browse/TRACING-4348[TRACING-4348]).
+* Before this update, users had to select certificate when accessing gateway route. After this update the promt to select the certificate is not shown (link:https://issues.redhat.com/browse/TRACING-4431[TRACING-4431]).
+* Before this update, the gateway component could not be scaled. After this update the gateway can be scaled (link:https://issues.redhat.com/browse/TRACING-4497[TRACING-4497]).
 
 [id="distr-tracing_3-3_tempo-release-notes_known-issues_{context}"]
 ==== Known issues
@@ -77,7 +91,7 @@ There is currently a known issue:
 
 The {JaegerName} is provided through the {JaegerOperator} Operator.
 
-The {JaegerName} 3.3 is based on the open source link:https://www.jaegertracing.io/[Jaeger] release 1.??.0.
+The {JaegerName} 3.3 is based on the open source link:https://www.jaegertracing.io/[Jaeger] release 1.57.0.
 
 [IMPORTANT]
 ====

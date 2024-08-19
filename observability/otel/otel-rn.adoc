@@ -17,21 +17,24 @@ include::snippets/distr-tracing-and-otel-disclaimer-about-docs-for-supported-fea
 
 The {OTELName} is provided through the {OTELOperator}.
 
-The {OTELName} 3.3 is based on the open source link:https://opentelemetry.io/[OpenTelemetry] release 0.???.?.
+The {OTELName} 3.3 is based on the open source link:https://opentelemetry.io/docs/collector/[OpenTelemetry] release 0.107.0.
 
 [id="otel_3-3_cves_{context}"]
 === CVEs
 
 This release fixes the following CVEs:
 
-* link:https://access.redhat.com/security/cve/CVE-202?-????/[CVE-202?-????]
+* link:https://access.redhat.com/security/cve/CVE-2024-6104[CVE-2024-6104], link:https://issues.redhat.com/browse/TRACING-4401[TRACING-4401]
 
 [id="otel_3-3_technology-preview-features_{context}"]
 === Technology Preview features
 
 This update introduces the following Technology Preview features:
 
-* ???.
+* Group by attribute processor
+* Exporting logs to OpenShift LokiStack log store
+* Rounting connector
+* Metrics transform processor
 
 :FeatureName: Each of these features
 include::snippets/technology-preview.adoc[leveloffset=+1]
@@ -41,7 +44,10 @@ include::snippets/technology-preview.adoc[leveloffset=+1]
 
 This update introduces the following enhancements:
 
-* ???.
+// https://issues.redhat.com/browse/TRACING-3768
+* Collector dashboard for internal collector metrics. The dashboard helps to analyze collector health and performance.
+// https://issues.redhat.com/browse/TRACING-3898
+* The operator is capable of automatically creating RBAC for collector components that require custom RBAC.
 
 [id="otel_3-3_jaeger-release-notes_deprecated-functionality_{context}"]
 === Deprecated functionality
@@ -58,7 +64,7 @@ In the {OTELName} 3.3, the FEATURE has been removed. Bug fixes and support are p
 
 This update introduces the following bug fixes:
 
-* ???. (link:https://issues.redhat.com/browse/TRACING-????/[TRACING-????])
+* This patch fixes creation of `ServiceMonitor` custom resource when operator monitoring is enabled (link:https://issues.redhat.com/browse/TRACING-4288[TRACING-4288])
 
 [id="otel_3-3_known-issues_{context}"]
 === Known issues
